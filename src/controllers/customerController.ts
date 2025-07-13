@@ -263,7 +263,11 @@ export const getBrandDeviceSummary = async (req: Request, res: Response) => {
 export const getLoginTrends = async (req: Request, res: Response) => {
   try {
     const { date } = req.query;
-
+    
+    if (!date) {
+      return res.status(200).json({ success: true, data: [], defaultDate: null });
+    }
+    
     let targetDateFrontendFormat: string;
     let targetDateDbFormat: string;
 
