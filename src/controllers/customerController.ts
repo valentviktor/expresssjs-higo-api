@@ -267,24 +267,9 @@ export const getLoginTrends = async (req: Request, res: Response) => {
     let targetDateFrontendFormat: string;
     let targetDateDbFormat: string;
 
-    if (date) {
-      targetDateFrontendFormat = date as string;
-      const [year, month, day] = targetDateFrontendFormat.split('-');
-      targetDateDbFormat = `${parseInt(month)}/${parseInt(day)}/${year}`;
-    } else {
-      const latestCustomer = await Customer.findOne().sort({ 'Date': -1 }).limit(1);
-      if (latestCustomer && latestCustomer['Date']) {
-        targetDateDbFormat = latestCustomer['Date'];
-        const [month, day, year] = targetDateDbFormat.split('/');
-        targetDateFrontendFormat = `${year}-${parseInt(month).toString().padStart(2, '0')}-${parseInt(day).toString().padStart(2, '0')}`;
-      } else {
-        return res.status(200).json({
-          success: true,
-          data: [],
-          defaultDate: null
-        });
-      }
-    }
+    targetDateFrontendFormat = date as string;
+    const [year, month, day] = targetDateFrontendFormat.split('-');
+    targetDateDbFormat = `${parseInt(month)}/${parseInt(day)}/${year}`;
 
     res.setHeader('X-Default-Date', targetDateFrontendFormat);
 
